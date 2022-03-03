@@ -15,5 +15,5 @@ A website that allows users to sign up, sign in, update their profile and search
  ## How to use the website: 
  1. Download the source code using git or as a zip file from above.
  2. Install Python and django if not installed.
- 3. Go to the file "UniversityLibrary\Online" and run the command "pip install -r requirements.txt"
+ 3. Go to the file "Online\" and run the command "pip install -r requirements.txt"
  4. Run the command "python manage.py runserver"
