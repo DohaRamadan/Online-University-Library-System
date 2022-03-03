@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<!-- Required meta tags -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+  <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <!--Fonts-->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" >
+    <!--Css-->
+     <link rel="stylesheet" href= "{% static 'css/BookDetails.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>University Library</title>
+    <script>
+        function Borrow() {
+        var xhttp = new XMLHttpRequest();
+        const container = document.getElementById('container');
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("container").innerHTML =
+            this.response;
+          }
+        };
+        xhttp.open("GET", "{% url 'pages:borrow' book_details.slug %}", true);
+        xhttp.send();
+      }
+
+      function Return() {
+        var xhttp = new XMLHttpRequest();
+        const container = document.getElementById('container');
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("container").innerHTML =
+            this.response;
+          }
+        };
+        xhttp.open("GET", "{% url 'pages:return' book_details.slug %}", true);
+        xhttp.send();
+      }
+      function Extend() {
+        var xhttp = new XMLHttpRequest();
+        const container = document.getElementById('container');
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("container").innerHTML =
+            this.response;
+          }
+        };
+        xhttp.open("GET", "{% url 'pages:extend' book_details.slug %}", true);
+        xhttp.send();
+      }
+    </script>
+  </head>
+ 
+ 
+{% endblock head %}
+{% block content %}
+
+{% if user.is_authenticated and user.is_superuser %}
+   {% include 'parts/adminnav.html' %}
+{% elif  user.is_authenticated and not user.is_superuser%}
+    {% include 'parts/loggednav.html' %}
+{% else %}
+    {% include 'parts/indexnavbar.html' %}
+{% endif %} 
+
+<!--Update form-->
+<div class="cont">
+    <form method ='GET'>
+       {%csrf_token %}
+      <div class="title">Book details</div>
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Title</span>
+               <div class='info'> {{book_details.title}}</div>
+            </div>
+            <div class="input-box">
+              <span class="details">Author Name</span>
+              <div class='info'>{{book_details.author}}</div> 
+          </div>
+          <div class="input-box">
+              <span class="details">ISBN</span>
+              <div class='info'>{{book_details.isbn}}</div> 
+          </div>
+          <div class="input-box">
+              <span class="details">Publication Year</span>
+              <div class='info'>{{book_details.publication_year}}</div> 
+              
+          </div>
+          <div class="input-box">
+              <span class="details">Borrowing Period</span>
+              <div class='info'>{{book_details.borrowing_period}} days</div> 
+          </div>
+          <div class="input-box">
+              <span class="details">Status</span>
+              <div class='info' id="status">{{book_details.status}}</div> 
+          </div>
+          {% if user.is_authenticated and user.is_superuser %}
+            <a class="btn" href="{% url 'pages:updatebook' book_details.slug %}" >Update</a>
+            <button class="btn1" id="borrow" onclick="Borrow()" type="button">Borrow</button>
+            <button class="btn1" id="return" onclick="Return()" type="button">Return</button>
+            <button class="btn1" id="extend"  onclick="Extend()" type="button">Extend</button>
+          {% elif  user.is_authenticated and not user.is_superuser  %}
+            <button class="btn1" id="borrow" onclick="Borrow()" type="button">Borrow</button>
+            <button class="btn1" id="return" onclick="Return()" type="button">Return</button>
+            <button class="btn1" id="extend"  onclick="Extend()" type="button">Extend</button>
+          {% endif %}
+
+          </div>
+ 
+    </form>
+  </div>
+ <center><div id="container"></div></center>
+  
+
+{% endblock content %}

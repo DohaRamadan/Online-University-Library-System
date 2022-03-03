@@ -1,0 +1,35 @@
+
+  <!-- Navbar -->
+  <input type="checkbox" id="check">
+   <div id='Navigate'>
+   <nav  class="main-header navbar navbar-expand navbar-white navbar-light" id='navg'>      
+   <!--sidebar button-->
+    <label class="sidebarlabel" for="check">
+      <i class="fas fa-bars" id="sidebar-btn"></i>
+    </label>
+   <label class="logo">University Library</label>
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+    <!-- <li class="nav-item">
+      </li>-->
+      <li class="nav-item d-none d-sm-inline-block"> 
+       <li><a href="{% url 'pages:index'%}" class="nav-link" id = 'NavA'>Home</a></li> 
+       <li><a href="{% url 'pages:books'%}" class="nav-link" id = 'NavA'>Books</a></li> 
+       {% if not user.is_authenticated %}
+       <li><a href="{% url 'pages:login'%}" class="nav-link" id = 'NavA'>Login</a></li> 
+       <li><a href="{% url 'pages:signup'%}" class="nav-link" id = 'NavA'>Sign up</a></li> 
+       {% endif %}
+       <li><a href="#" class="nav-link" id = 'NavA'>About us</a></li> 
+    </ul>
+</nav>
+</div>
+
+<!--Side bar-->
+<div class="sidebar">
+  <a href="{% url 'pages:index'%}"><label class="sidebartitle">Home</label></a>
+   {% if not user.is_authenticated %}
+  <a href="{% url 'pages:login'%}" class="sidebarlinks" ><span>Sign in</span></a>
+  <a href="{% url 'pages:signup'%}" class="sidebarlinks"><span>Sign up</span></a>
+   {% endif %}
+  <a href="{% url 'pages:books'%}" class="sidebarlinks"><span>Books</span></a>
+</div>

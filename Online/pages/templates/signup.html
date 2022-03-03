@@ -1,0 +1,239 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block head %}
+<!--suppress ALL -->
+    <head>
+    <!-- Required meta tags -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+  <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <!--Fonts-->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <!--Css-->
+     <link rel="stylesheet" href= "{% static 'css/Signup.css' %}">
+     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <!--<script src="{% static 'js/student.js' %}"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>University Library</title>
+  <script type="text/javascript">
+  $(function(){
+     $("#fnwarning").hide()
+     $("#lnwarning").hide()
+     $("#unwarning").hide()
+     $("#emwarning").hide()
+     $("#p1warning").hide()
+     $("#p2warning").hide()
+     
+     var fname_error = false;
+     var lname_error = false;
+     var uname_error = false;
+     var email_error = false;
+     var p1_error = false;
+     var p2_error = false;
+
+     $("#first_name_input_field").focusout(function(){
+          check_fname();
+     })
+
+     $("#last_name_input_field").focusout(function(){
+        check_lname();
+      })
+
+      $("#email_input_field").focusout(function(){
+         check_email();
+      })
+
+      $("#password1_input_field").focusout(function(){
+         check_p1();
+      })
+
+      $("#password2_input_field").focusout(function(){
+        check_p2();
+      })
+ 
+      function check_fname(){
+        var pattern = /^[a-zA-Z]*$/;
+        var fname = $("#first_name_input_field").val();
+        if (pattern.test(fname) && fname != '')
+        {
+          $("#fnwarning").hide();
+          $("#first_name_input_field").css("border-bottome", "2px solid #34F458")
+        } else{
+          $("#fnwarning").html("First Name should contain only characters")
+          $("#fnwarning").show();
+          $("#first_name_input_field").css("border-bottome", "2px solid #F90A0A")
+          fname_error = true;
+        }
+      }
+
+      function check_lname(){
+        var pattern = /^[a-zA-Z]*$/;
+        var lname = $("#last_name_input_field").val();
+        if (pattern.test(lname) && lname != '')
+        {
+          $("#lnwarning").hide();
+          $("#last_name_input_field").css("border-bottome", "2px solid #34F458")
+        } else{
+          $("#lnwarning").html("Last Name should contain only characters")
+          $("#lnwarning").show();
+          $("#last_name_input_field").css("border-bottome", "2px solid #F90A0A")
+          fname_error = true;
+        }
+      }
+
+      function check_p1(){
+        var number = /([0-9])/;
+        var  alphabets = /([a-zA-Z])/;
+        var special_characters = /([~,!,@,#,$,%,^,&,*,-,_,+,=,?,>,<])/;
+        var password_length = $("#password1_input_field").val().length;
+        if (password_length < 8)
+        {
+          $("#p1warning").html("Password should be at least 8 characters")
+          $("#p1warning").show();
+          $("#password1_input_field").css("border-bottome", "2px solid #F90A0A")
+          p1_error = true;
+        }
+        else{
+          if($('#password1_input_field').val.match(number)  && $('#password1_input_field').val().match(alphabets) && $('#password1_input_field').val().match(special_characters)){
+
+          }else{
+            $("#p1warning").html("Password should include alphabets, numbers and special characters.")
+            $("#p1warning").show();
+            $("#password1_input_field").css("border-bottome", "2px solid #F90A0A")
+            p1_error = true;
+          }
+        }
+      }
+
+      function check_p2(){
+        var password1 = $("#password1_input_field").val();
+        var password2 = $("#password2_input_field").val();
+        if (password1 !== password2 )
+        {
+          $("#p2warning").html("Passwords Did not Matched")
+          $("#p2warning").show();
+          $("#password1_input_field").css("border-bottome", "2px solid #F90A0A")
+          p2_error = true;
+        }else {
+               $("#p2warning").hide();
+               $("#password1_input_field").css("border-bottom","2px solid #34F458");
+            }
+      }
+
+        function check_email() {
+            var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            var email = $("#email_input_field").val();
+            if (pattern.test(email) && email !== '') {
+               $("#emwarning").hide();
+               $("#email_input_field").css("border-bottom","2px solid #34F458");
+            } else {
+               $("#emwarning").html("Invalid Email");
+               $("#emwarning").show();
+               $("#form_email").css("border-bottom","2px solid #F90A0A");
+               email_error = true;
+            }
+         }
+
+         $("#registration_form").submit(function() {
+            fname_error = false;
+            lname_error = false;
+            email_error = false;
+            p1_error = false;
+            p2_error = false;
+
+            check_fname();
+            check_lname();
+            check_email();
+            check_p1();
+            check_p2();
+
+            if (fname_error === false && lname_error === false && email_error === false && p1_error === false && p2_error === false) {
+               alert("Registration Successfull");
+               return true;
+            } else {
+               alert("Please Fill the form Correctly");
+               return false;
+            }
+          });
+
+     
+        });        
+  
+
+  </script>
+  </head>
+{% endblock head %}
+
+{% block content %}
+
+
+
+
+
+<!--Sign up form-->
+    <div class="cont">
+      <form method='POST' id="registration_form" >
+       {% csrf_token %}
+       {% if not user.is_authenticated %}
+        <div class="title">Registration</div>
+          <div class="user-details">
+       
+              <div class="input-box">
+                  <span class="details">First Name</span>
+                  <div >{{form.first_name}}</div>
+                  <span id="fnwarning"></span>
+              </div>
+               <div class="input-box">
+                  <span class="details">Last Name</span>
+                 <div > {{form.last_name}}</div>
+                 <span id="lnwarning"></span>
+              </div>
+
+              <div class="input-box">
+                <span class="details">Username</span>
+              <div >{{form.username}}</div>
+              <span id="unwarning"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">Email</span>
+                <div >{{form.email}}</div>
+                <span id="emwarning"></span>
+            </div>
+          
+            <div class="input-box">
+                <span class="details">Password</span>
+                 <div>{{form.password1}}</div>
+                 <span id="p1warning"></span>
+            </div>
+            <div class="input-box">
+                <span class="details">Confirm Password</span>
+                <div>{{form.password2}}</div>
+                <span id="p2warning"></span>
+            </div>
+             <div class="Rebutton">
+              <input type="submit"  value="Sign up">
+            </div>
+          <div class="form-text" style="color: white; font-size: 20px">
+                  Already have an account? <a href="{% url 'pages:login' %}">Sign in</a>
+              </div>
+          </div>
+            {% elif user.is_authenticated%}
+            <div class="input-box">
+             <center ><span class="details" id="warn">You're Already logged in!</span>
+             <p>Do you want to log out?</p>
+             <a href="{% url 'pages:logout'%}" id="err" class="btn btn-primary" >  Log out </a>
+            </center> 
+            </div>
+
+        </div>
+            {% endif %}
+
+      </form>
+    </div>
+
+
+{% endblock content %}

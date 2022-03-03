@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+<head>
+    <!-- Required meta tags -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+    <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <!--Fonts-->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" >
+    <!--Css-->
+     <link rel="stylesheet" href= "{% static 'css/book.css' %}">
+    <script src= "{% static 'js/index.js' %}" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>University Library</title>
+  </head>
+{% endblock head %}
+
+{% block content %}
+ 
+{% if user.is_authenticated and user.is_superuser %}
+   {% include 'parts/adminnav.html' %}
+{% elif  user.is_authenticated and not user.is_superuser%}
+    {% include 'parts/loggednav.html' %}
+{% else %}
+    {% include 'parts/indexnavbar.html' %}
+{% endif %} 
+
+<!--search-->
+
+<section id="search">
+   <div class="SearchBar">
+    <form class="example" method='POST'> 
+    {% csrf_token %}
+      <select name="category">
+        {% for cat in category %} 
+        <option value="{{cat.name}}" id = "opt">{{cat.name}}</option>
+         {% endfor %}
+      </select>
+      <input type="text" placeholder="What are you looking for?" name="search">
+      <button type="submit" class="searchbutton"></i>Search</button>
+    </form>
+  </div>  
+</section>
+   
+
+<section class="view">
+    <div id="dd">
+        <h2  id ="ab">Books</h2>
+     </div>
+     {% for book in books %}
+     <div class="b-container">
+         <div class="book">
+             <div class="b-content">
+                 <p class="p">
+                     <span class="btitle"> Book Tiltle: </span> 
+                     <span class="binfo">{{book.title}}</span> 
+                 </p>
+                 <p class="p">
+                    <span class="btitle">Book ISBN: </span>  
+                    <span class="binfo">{{book.isbn}}</span>
+                </p>
+                <p class="p">
+                    <span class="btitle">Book Author:</span>   
+                    <span class="binfo">{{book.author}}</span>
+                 </p>
+                 <p class="p">
+                    <span class="btitle">Book Status:</span>   
+                    <span class="binfo">{{book.status}}</span>
+                 </p>
+                 <a class="btn" href="{% url 'pages:bookdetails' book.slug %}" >Details</a>
+         </div>
+       </div>
+     </div>
+ {% endfor %}
+</section>
+
+
+{% endblock content %}

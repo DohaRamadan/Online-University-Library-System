@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load widget_tweaks  %}
+{% load static %}
+{% block head %}
+<head>
+    <!-- Required meta tags -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+    <!-- Bootstrap CSS -->
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+      <!--Fonts-->
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" >
+    <!--Css-->
+     <link rel="stylesheet" href= "{% static 'css/UpdateUser.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <title>University Library</title>
+  </head>
+{% endblock head %}
+{% block content %}
+{% if user.is_authenticated and user.is_superuser %}
+   {% include 'parts/adminnav.html' %}
+{% elif  user.is_authenticated and not user.is_superuser%}
+    {% include 'parts/loggednav.html' %}
+{% else %}
+    {% include 'parts/indexnavbar.html' %}
+{% endif %} 
+
+
+<!--Update user form-->
+<div class="cont">
+      <form  method='POST'>
+      {% csrf_token %}
+        <div class="title">Update Your Profile</div>
+          <div class="user-details">
+              <div class="input-box">
+                  <span class="details">First Name</span>
+                
+                {{profile.first_name}}
+              </div>
+                <div class="input-box">
+                  <span class="details">Last Name</span>
+                
+                {{profile.last_name}}
+              </div>
+               <div class="input-box">
+                <span class="details">Username</span>
+                {{profile.username}}
+             
+            </div>
+             <div class="input-box">
+                <span class="details">Email</span>
+                {{profile.email}}
+            </div>
+          </div>
+          <div class="Rebutton">
+              <input type="submit" value="Update" >
+          </div>
+      </form>
+    </div>
+
+{% endblock content %}
